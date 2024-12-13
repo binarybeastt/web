@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 const UserNotifications = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);

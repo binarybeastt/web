@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SummaryByNotification = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const { notification_id } = useParams();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
