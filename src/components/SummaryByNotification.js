@@ -12,7 +12,7 @@ const SummaryByNotification = () => {
     const fetchSummary = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8000/notification_summary/${notification_id}`, {
+        const response = await fetch(`${apiUrl}/notification_summary/${notification_id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,  // Attach the token for authorization

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 const UserNotifications = () => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,7 +11,7 @@ const UserNotifications = () => {
     const fetchNotifications = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8000/user_notifications/', {
+        const response = await fetch(`${apiUrl}/user_notifications/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`, // Attach the token for authorization
@@ -48,7 +49,7 @@ const UserNotifications = () => {
             return (
               <li key={notification._id}>
                 <a
-                  href={`http://localhost:3000/view-summary/${summaryId}`}
+                  href={`${baseUrl}/view-summary/${summaryId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

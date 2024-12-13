@@ -5,13 +5,13 @@ import { getAnalytics } from "firebase/analytics";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBuT1zKSzTLBfzCFV3eqRNPxCeZ2Vg7faA",
-  authDomain: "smart-notifications-9caa0.firebaseapp.com",
-  projectId: "smart-notifications-9caa0",
-  storageBucket: "smart-notifications-9caa0.firebasestorage.app",
-  messagingSenderId: "891675913093",
-  appId: "1:891675913093:web:ea97094af9c5a3ab0732ec",
-  measurementId: "G-8W9XVNV0EJ",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -29,7 +29,7 @@ export const requestNotificationPermission = async () => {
 
       // Send token to backend
       const authToken = localStorage.getItem("token");
-      await fetch("http://localhost:8000/api/register-fcm-token", {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/register-fcm-token`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,

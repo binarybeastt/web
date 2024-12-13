@@ -1,10 +1,11 @@
 import React from 'react';
 
 const TriggerNotification = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const handleTriggerNotification = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/test_notifications/', {
+      const response = await fetch(`${apiUrl}/test_notifications/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

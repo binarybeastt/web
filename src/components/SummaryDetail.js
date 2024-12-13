@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SummaryDetail = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const { summary_id } = useParams(); // Extract the summary ID from the URL
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const SummaryDetail = () => {
     const fetchSummary = async () => {
       try {
         const authToken = localStorage.getItem('token'); // Assuming the auth token is stored in localStorage
-        const response = await fetch(`http://localhost:8000/summaries/${summary_id}`, {
+        const response = await fetch(`${apiUrl}/summaries/${summary_id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -53,7 +54,7 @@ const SummaryDetail = () => {
   
       console.log('Sending Payload:', payload);
       const authToken = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/chat/${summary_id}`, {
+      const response = await fetch(`${apiUrl}/api/chat/${summary_id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

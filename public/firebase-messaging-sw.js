@@ -2,13 +2,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyBuT1zKSzTLBfzCFV3eqRNPxCeZ2Vg7faA',
-  authDomain: "smart-notifications-9caa0.firebaseapp.com",
-  projectId: 'smart-notifications-9caa0',
-  messagingSenderId: '891675913093',
-  storageBucket: "smart-notifications-9caa0.firebasestorage.app",
-  appId: "1:891675913093:web:ea97094af9c5a3ab0732ec",
-  measurementId: "G-8W9XVNV0EJ"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(firebaseConfig);

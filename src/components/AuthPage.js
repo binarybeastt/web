@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AuthPage = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -10,7 +11,7 @@ const AuthPage = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://localhost:8000/signup/', {  // Add full URL
+      const response = await fetch(`${apiUrl}/signup/`, {  // Add full URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +34,7 @@ const AuthPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8000/login/', {  // Add full URL
+      const response = await fetch(`${apiUrl}/login/`, {  // Add full URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

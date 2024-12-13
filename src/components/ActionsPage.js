@@ -6,6 +6,7 @@ import {
 } from '../services/firebase';
 
 const ActionsPage = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const [preferences, setPreferences] = useState({
@@ -42,7 +43,7 @@ const ActionsPage = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/get_preferences/', {
+      const response = await fetch(`${apiUrl}/get_preferences/`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ const ActionsPage = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/preferences/', {
+      const response = await fetch(`${apiUrl}/get_preferences/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ const ActionsPage = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/summarize/recent_articles/', {
+      const response = await fetch(`${apiUrl}/summarize/recent_articles/`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +106,7 @@ const ActionsPage = () => {
   const handleTriggerNotification = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/test_notifications/', {
+      const response = await fetch(`${apiUrl}/test_notifications/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -143,7 +144,7 @@ const ActionsPage = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const response = await fetch(`${apiUrl}${endpoint}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
