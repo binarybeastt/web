@@ -64,7 +64,7 @@ const ActionsPage = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/get_preferences/`, {
+      const response = await fetch(`${apiUrl}/preferences/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
