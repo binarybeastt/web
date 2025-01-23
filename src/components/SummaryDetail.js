@@ -8,7 +8,6 @@ const SummaryDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
-  const [chatHistory, setChatHistory] = useState([]); // Manage chat history
   const [threadId, setThreadId] = useState(null);
 
   useEffect(() => {
@@ -66,8 +65,7 @@ const SummaryDetail = () => {
   const sendChatMessage = async () => {
     try {
       const payload = {
-        query: chatMessage
-        
+        question: chatMessage
       };
   
       console.log('Sending Payload:', payload);
@@ -88,7 +86,11 @@ const SummaryDetail = () => {
       }
   
       const data = await response.json();
-      // Rest of your existing code
+      console.log('Response:', data.response);
+
+      setChatMessage('');
+
+    
     } catch (err) {
       console.error('Detailed error:', err);
     }
