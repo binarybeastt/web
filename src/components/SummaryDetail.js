@@ -120,30 +120,51 @@ const SummaryDetail = () => {
       </div>
 
       <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}>
-        <h3>Chat about this summary</h3>
-        <div style={{ marginBottom: '10px' }}>
-          {chatHistory.map((chat, index) => (
-            <p key={index}><strong>{chat.user}:</strong> {chat.message}</p>
-          ))}
+        <h3>Ask questions about this summary</h3>
+        <div style={{ 
+          marginBottom: '10px',
+          maxHeight: '400px',
+          overflowY: 'auto',
+          border: '1px solid #eee',
+          borderRadius: '4px',
+          padding: '10px'
+        }}>
+          {/* No more chat history mapping - this will be handled by Redis */}
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <input
             type="text"
             value={chatMessage}
             onChange={(e) => setChatMessage(e.target.value)}
-            placeholder="Type your message..."
-            style={{ flex: 1, padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+            onKeyPress={(e) => e.key === 'Enter' && sendChatMessage()}
+            placeholder="Ask a question about this summary..."
+            style={{ 
+              flex: 1, 
+              padding: '10px', 
+              border: '1px solid #ccc', 
+              borderRadius: '4px',
+              fontSize: '16px'
+            }}
           />
           <button
             onClick={sendChatMessage}
-            style={{ backgroundColor: '#4CAF50', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer' }}
+            disabled={!chatMessage.trim()}
+            style={{ 
+              backgroundColor: chatMessage.trim() ? '#4CAF50' : '#cccccc',
+              color: 'white', 
+              border: 'none', 
+              padding: '10px 20px', 
+              borderRadius: '4px', 
+              cursor: chatMessage.trim() ? 'pointer' : 'not-allowed',
+              fontSize: '16px'
+            }}
           >
             Send
           </button>
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default SummaryDetail;
