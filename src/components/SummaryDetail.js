@@ -29,8 +29,28 @@ const SummaryDetail = () => {
             throw new Error('An error occurred while fetching the summary');
           }
         }
-
         const data = await response.json();
+
+        // If no thread_id exists, create one
+        if (!data.thread_id) {
+          const threadResponse = await fetch(`${apiUrl}/summaries/${summary_id}/init-thread`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            }
+          });
+
+          if (!threadResponse.ok) {
+            throw new Error('Failed to initialize chat thread');
+          }
+          
+          const threadData = await threadResponse.json();
+          setThreadId(threadData.thread_id);
+          data.thread_id = threadData.thread_id;
+        } else {
+          setThreadId(data.thread_id);
+        }
+        
         setSummary(data);
         setLoading(false);
       } catch (err) {
