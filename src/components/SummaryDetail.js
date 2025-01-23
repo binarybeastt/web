@@ -66,11 +66,8 @@ const SummaryDetail = () => {
   const sendChatMessage = async () => {
     try {
       const payload = {
-        query: chatMessage,
-        chat_history: chatHistory.map(chat => ({
-          role: chat.user === 'You' ? 'user' : 'assistant',
-          content: chat.message
-        }))
+        query: chatMessage
+        
       };
   
       console.log('Sending Payload:', payload);
