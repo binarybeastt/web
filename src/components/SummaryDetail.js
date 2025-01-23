@@ -9,6 +9,7 @@ const SummaryDetail = () => {
   const [error, setError] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]); // Manage chat history
+  const [threadId, setThreadId] = useState(null);
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -50,7 +51,7 @@ const SummaryDetail = () => {
         } else {
           setThreadId(data.thread_id);
         }
-        
+
         setSummary(data);
         setLoading(false);
       } catch (err) {
