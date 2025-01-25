@@ -65,7 +65,7 @@ const SummaryDetail = () => {
   const sendChatMessage = async () => {
     try {
       const payload = {
-        question: chatMessage
+        question: chatMessage,
       };
   
       console.log('Sending Payload:', payload);
@@ -74,9 +74,9 @@ const SummaryDetail = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`, // Ensure the token is included
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
   
       if (!response.ok) {
@@ -87,10 +87,8 @@ const SummaryDetail = () => {
   
       const data = await response.json();
       console.log('Response:', data.response);
-
+  
       setChatMessage('');
-
-    
     } catch (err) {
       console.error('Detailed error:', err);
     }
