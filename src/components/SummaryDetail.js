@@ -9,6 +9,8 @@ const SummaryDetail = () => {
   const [error, setError] = useState(null);
   const [chatMessage, setChatMessage] = useState("");
   const [threadId, setThreadId] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isResponding, setIsResponding] = useState(false);
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -64,9 +66,18 @@ const SummaryDetail = () => {
 
   const sendChatMessage = async () => {
     try {
+      setIsResponding(true);
       const payload = {
         question: chatMessage,
       };
+
+      setChatHistory(prev => [...prev, {
+        role: 'user',
+        content: chatMessage,
+        timestamp: new Date().toISOString()
+      }]);
+
+      setChatMessage('');
   
       console.log('Sending Payload:', payload);
       const authToken = localStorage.getItem('token');
@@ -88,11 +99,82 @@ const SummaryDetail = () => {
       const data = await response.json();
       console.log('Response:', data.response);
   
-      setChatMessage('');
+      setChatHistory(prev => [...prev, {
+        role: 'assistant',
+        content: data.response,
+        timestamp: new Date().toISOString()
+      }]);
     } catch (err) {
       console.error('Detailed error:', err);
+
+      setChatHistory(prev => [...prev, {
+        role: 'error',
+        content: 'Failed to get response. Please try again.',
+        timestamp: new Date().toISOString()
+      }]);
+    } finally {
+      setIsResponding(false);
     }
   };
+
+  // Message component for better organization
+  const ChatMessage = ({ message }) => (
+    <div style={{ 
+      marginBottom: '10px',
+      padding: '10px',
+      borderRadius: '8px',
+      maxWidth: '80%',
+      backgroundColor: message.role === 'user' ? '#E3F2FD' : '#F5F5F5',
+      marginLeft: message.role === 'user' ? 'auto' : '0',
+      marginRight: message.role === 'user' ? '0' : 'auto',
+    }}>
+      <div style={{ 
+        fontWeight: message.role === 'error' ? 'bold' : 'normal',
+        color: message.role === 'error' ? 'red' : 'inherit'
+      }}>
+        {message.content}
+      </div>
+      <div style={{ 
+        fontSize: '0.8em', 
+        color: '#666',
+        marginTop: '4px'
+      }}>
+        {new Date(message.timestamp).toLocaleTimeString()}
+      </div>
+    </div>
+  );
+
+  // Loading animation component
+  const LoadingDots = () => (
+    <div style={{ 
+      display: 'flex', 
+      gap: '4px',
+      padding: '10px',
+      alignItems: 'center'
+    }}>
+      {[1, 2, 3].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            width: '8px',
+            height: '8px',
+            backgroundColor: '#666',
+            borderRadius: '50%',
+            animation: 'bounce 1.4s infinite ease-in-out',
+            animationDelay: `${i * 0.16}s`
+          }}
+        />
+      ))}
+      <style>
+        {`
+          @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+          }
+        `}
+      </style>
+    </div>
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -125,16 +207,22 @@ const SummaryDetail = () => {
           overflowY: 'auto',
           border: '1px solid #eee',
           borderRadius: '4px',
-          padding: '10px'
+          padding: '10px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px'
         }}>
-          {/* No more chat history mapping - this will be handled by Redis */}
+          {chatHistory.map((message, index) => (
+            <ChatMessage key={index} message={message} />
+          ))}
+          {isResponding && <LoadingDots />}
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <input
             type="text"
             value={chatMessage}
             onChange={(e) => setChatMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendChatMessage()}
+            onKeyPress={(e) => e.key === 'Enter' && chatMessage.trim() && !isResponding && sendChatMessage()}
             placeholder="Ask a question about this summary..."
             style={{ 
               flex: 1, 
@@ -146,14 +234,14 @@ const SummaryDetail = () => {
           />
           <button
             onClick={sendChatMessage}
-            disabled={!chatMessage.trim()}
+            disabled={!chatMessage.trim() || isResponding}
             style={{ 
-              backgroundColor: chatMessage.trim() ? '#4CAF50' : '#cccccc',
+              backgroundColor: chatMessage.trim() && !isResponding ? '#4CAF50' : '#cccccc',
               color: 'white', 
               border: 'none', 
               padding: '10px 20px', 
               borderRadius: '4px', 
-              cursor: chatMessage.trim() ? 'pointer' : 'not-allowed',
+              cursor: chatMessage.trim() && !isResponding ? 'pointer' : 'not-allowed',
               fontSize: '16px'
             }}
           >
